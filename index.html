@@ -112,7 +112,13 @@ button, a, input, select, summary { -webkit-tap-highlight-color: transparent; }
   clip-path: polygon(20% 0, 94% 0, 96% 98%, 52% 80%, 4% 100%, 14% 49%);
 }
 .bow i::before { left: -117%; transform-origin: 94% 4%; transform: rotate(22deg); }
-.bow i::after { right: -117%; transform-origin: 6% 4%; transform: scaleX(-1) rotate(22deg); }
+.bow i::after {
+  right: -117%;
+  transform-origin: 6% 4%;
+  transform: rotate(-22deg);
+  background: linear-gradient(250deg, var(--bow-fold), var(--bow-pink) 47%, #f9cbde);
+  clip-path: polygon(80% 0, 6% 0, 4% 98%, 48% 80%, 96% 100%, 86% 49%);
+}
 .bow-mark { width: 29px; height: 22px; }
 .bow-hero {
   position: absolute;
