@@ -73,7 +73,8 @@ button, a, input, select, summary { -webkit-tap-highlight-color: transparent; }
   height: 26px;
   flex: none;
   isolation: isolate;
-  --bow-edge: #b97293;
+  --bow-edge: #986c63;
+  --bow-stroke: 1px;
   --bow-light: #ffe2ed;
   --bow-pink: #f4b8ce;
   --bow-fold: #dd96b5;
@@ -82,6 +83,7 @@ button, a, input, select, summary { -webkit-tap-highlight-color: transparent; }
   content: '';
   position: absolute;
   top: 8%;
+  z-index: 1;
   width: 49%;
   height: 49%;
   border: 1px solid var(--bow-edge);
@@ -101,23 +103,32 @@ button, a, input, select, summary { -webkit-tap-highlight-color: transparent; }
   border-radius: 31%;
   background: linear-gradient(135deg, var(--bow-light), var(--bow-pink) 69%, var(--bow-fold));
 }
-.bow i::before, .bow i::after {
+.bow-tails {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+.bow-tails > span {
+  position: absolute;
+  top: 39%;
+  left: 25%;
+  width: 25%;
+  height: 52%;
+  background: var(--bow-edge);
+  clip-path: polygon(23% 0, 96% 0, 94% 100%, 53% 80%, 0 100%, 13% 49%);
+  transform: rotate(21deg);
+}
+.bow-tails > span + span {
+  left: auto;
+  right: 25%;
+  transform: scaleX(-1) rotate(21deg);
+}
+.bow-tails > span::after {
   content: '';
   position: absolute;
-  z-index: -1;
-  top: 80%;
-  width: 152%;
-  height: 218%;
+  inset: var(--bow-stroke);
   background: linear-gradient(110deg, var(--bow-fold), var(--bow-pink) 47%, #f9cbde);
-  clip-path: polygon(20% 0, 94% 0, 96% 98%, 52% 80%, 4% 100%, 14% 49%);
-}
-.bow i::before { left: -117%; transform-origin: 94% 4%; transform: rotate(22deg); }
-.bow i::after {
-  right: -117%;
-  transform-origin: 6% 4%;
-  transform: rotate(-22deg);
-  background: linear-gradient(250deg, var(--bow-fold), var(--bow-pink) 47%, #f9cbde);
-  clip-path: polygon(80% 0, 6% 0, 4% 98%, 48% 80%, 96% 100%, 86% 49%);
+  clip-path: inherit;
 }
 .bow-mark { width: 29px; height: 22px; }
 .bow-hero {
@@ -127,6 +138,7 @@ button, a, input, select, summary { -webkit-tap-highlight-color: transparent; }
   left: 202px;
   width: 135px;
   height: 93px;
+  --bow-stroke: 2px;
   translate: -50% 0;
   filter: drop-shadow(1px 4px 2px #ad668735);
   animation: bow-sway 5.2s ease-in-out infinite;
@@ -290,7 +302,7 @@ textarea { width: 100%; margin-top: 12px; padding: 9px; border: 1px solid var(--
 <body>
   <div class="ribbon-edge" aria-hidden="true"></div>
   <header class="site-header wrap">
-    <a class="brand" href="./"><span class="bow bow-mark" aria-hidden="true"><i></i></span> Sổ điện nhà mình</a>
+    <a class="brand" href="./"><span class="bow bow-mark" aria-hidden="true"><span class="bow-tails" aria-hidden="true"><span></span><span></span></span><i></i></span> Sổ điện nhà mình</a>
     <button type="button" class="quiet-button effects-button" id="effects" aria-pressed="true"><span aria-hidden="true">✦</span><span id="effects-label">Hiệu ứng bật</span></button>
   </header>
 
@@ -310,7 +322,7 @@ textarea { width: 100%; margin-top: 12px; padding: 9px; border: 1px solid var(--
             <span class="art-rule"></span><span class="art-rule short"></span>
           </div>
         </div>
-        <span class="bow bow-hero"><i></i></span>
+        <span class="bow bow-hero"><span class="bow-tails" aria-hidden="true"><span></span><span></span></span><i></i></span>
         <div class="postmark"><span>♡</span></div>
       </div>
     </section>
@@ -333,14 +345,14 @@ textarea { width: 100%; margin-top: 12px; padding: 9px; border: 1px solid var(--
 
     <section id="shared-banner" class="shared-banner panel" aria-label="Hóa đơn từ liên kết" hidden>
       <div><strong>Hóa đơn từ liên kết chia sẻ</strong><p id="shared-caption">Bạn có thể xem và chỉnh thử lịch này.</p></div>
-      <button class="quiet-button" id="save-shared" type="button">Lưu bản này</button>
+      <button class="quiet-button" id="use-shared" type="button">Dùng bản này</button>
     </section>
 
     <div class="workspace">
       <section class="calendar-panel panel" aria-labelledby="calendar-heading">
         <div class="panel-heading">
           <div><h2 id="calendar-heading">Lịch ngày vắng</h2><p>Chọn một người rồi đánh dấu ngày trên lịch.</p></div>
-          <span class="bow bow-calendar" aria-hidden="true"><i></i></span>
+          <span class="bow bow-calendar" aria-hidden="true"><span class="bow-tails" aria-hidden="true"><span></span><span></span></span><i></i></span>
         </div>
         <div class="members" id="members" aria-label="Thành viên"></div>
         <div class="calendar-tools">
@@ -368,7 +380,7 @@ textarea { width: 100%; margin-top: 12px; padding: 9px; border: 1px solid var(--
           <button class="primary-button" id="copy-summary" type="button" disabled><span aria-hidden="true">▤</span> Sao chép kết quả</button>
           <button class="quiet-button" id="copy-link" type="button" disabled><span aria-hidden="true">↗</span> Chia sẻ hóa đơn</button>
         </div>
-        <p class="sharing-note">Dữ liệu lưu trên trình duyệt này. Link chia sẻ gửi một bản chụp hóa đơn.</p>
+        <p class="sharing-note">Link chia sẻ gửi một bản chụp hóa đơn.</p>
       </section>
     </div>
 
@@ -379,7 +391,7 @@ textarea { width: 100%; margin-top: 12px; padding: 9px; border: 1px solid var(--
     </details>
   </main>
 
-  <footer class="site-footer wrap"><span class="bow bow-mark" aria-hidden="true"><i></i></span><span id="storage-status">Tự động lưu trên trình duyệt này</span></footer>
+  <footer class="site-footer wrap"><span class="bow bow-mark" aria-hidden="true"><span class="bow-tails" aria-hidden="true"><span></span><span></span></span><i></i></span><span>Hóa đơn tự đặt lại khi tải trang hoặc khi sang tháng mới.</span></footer>
   <div class="toast" id="toast" role="status"></div>
 
   <dialog id="day-dialog" aria-labelledby="day-title">
@@ -468,10 +480,14 @@ function encodeShared(year, month, amount, absences) {
 }
 
 const byId = id => document.getElementById(id);
-const todayParts = new Intl.DateTimeFormat('en', {
+const todayFormatter = new Intl.DateTimeFormat('en', {
   timeZone: 'Asia/Ho_Chi_Minh', year: 'numeric', month: 'numeric', day: 'numeric'
-}).formatToParts(new Date());
-const today = Object.fromEntries(todayParts.map(part => [part.type, Number(part.value)]));
+});
+function readToday() {
+  const parts = todayFormatter.formatToParts(new Date());
+  return Object.fromEntries(parts.map(part => [part.type, Number(part.value)]));
+}
+let today = readToday();
 const months = byId('month');
 const years = byId('year');
 const amountInput = byId('amount');
@@ -498,31 +514,12 @@ function storageGet(key) {
 }
 
 function storageSet(key, value) {
-  try {
-    localStorage.setItem(storagePrefix + key, value);
-    return true;
-  } catch {
-    byId('storage-status').textContent = 'Trình duyệt hiện không cho phép lưu tự động';
-    return false;
-  }
+  try { localStorage.setItem(storagePrefix + key, value); }
+  catch { /* The effect preference still applies to this page. */ }
 }
 
-function periodKey() {
-  return `${year}-${String(month).padStart(2, '0')}`;
-}
-
-function saveMonth() {
-  if (shared) return false;
-  return storageSet(periodKey(), JSON.stringify({ amount, absences: absences.map(days => [...days]) }));
-}
-
-function loadMonth(snapshot = null) {
+function loadMonth(record = null) {
   const count = daysInMonth(year, month);
-  let record = snapshot;
-  if (!record) {
-    try { record = JSON.parse(storageGet(periodKey())); }
-    catch { record = null; }
-  }
   amount = Number.isSafeInteger(record?.amount) && record.amount >= 0 && record.amount <= maxBill ? record.amount : null;
   absences = people.map((_, person) => {
     const days = record?.absences?.[person];
@@ -533,6 +530,8 @@ function loadMonth(snapshot = null) {
   years.value = year;
   amountInput.value = amount === null ? '' : money.format(amount);
   setAmountError('');
+  selected = 0;
+  mode = 'single';
   history = [];
   rangeStart = null;
   byId('shared-banner').hidden = !shared;
@@ -614,7 +613,6 @@ function selectDay(day) {
   }
   if (days.size !== before.size) {
     history.push({ person: selected, before });
-    saveMonth();
   }
   render();
 }
@@ -630,7 +628,7 @@ function render() {
   byId('legend-person').textContent = people[selected];
   byId('copy-summary').disabled = !validAmount;
   byId('copy-link').disabled = !validAmount || location.protocol === 'file:';
-  byId('save-shared').disabled = !validAmount;
+  byId('use-shared').disabled = !validAmount;
 
   const note = byId('all-away-note');
   note.hidden = split.emptyDays.length === 0;
@@ -684,19 +682,22 @@ function leaveSnapshot() {
 }
 
 function openFromLocation() {
+  today = readToday();
   const snapshot = decodeShared(location.hash);
   shared = Boolean(snapshot);
-  if (snapshot) {
-    ({ year, month } = snapshot);
-  } else {
-    const recent = /^(\d{4})-(\d{2})$/.exec(storageGet('period') ?? '');
-    const savedYear = Number(recent?.[1]);
-    const savedMonth = Number(recent?.[2]);
-    year = savedYear >= minYear && savedYear <= maxYear ? savedYear : today.year;
-    month = savedMonth >= 1 && savedMonth <= 12 ? savedMonth : today.month;
-    if (location.hash.startsWith('#hd=')) notify('Liên kết hóa đơn không hợp lệ.');
-  }
+  ({ year, month } = snapshot ?? today);
+  if (!snapshot && location.hash.startsWith('#hd=')) notify('Liên kết hóa đơn không hợp lệ.');
   loadMonth(snapshot);
+}
+
+function checkForNewMonth() {
+  const current = readToday();
+  const newMonth = current.year !== today.year || current.month !== today.month;
+  today = current;
+  if (!newMonth || shared) return;
+  ({ year, month } = current);
+  loadMonth();
+  notify('Đã sang tháng mới. Hóa đơn đã được đặt lại.');
 }
 
 function notify(message) {
@@ -746,7 +747,6 @@ for (const selector of [months, years]) {
     leaveSnapshot();
     year = Number(years.value);
     month = Number(months.value);
-    storageSet('period', periodKey());
     loadMonth();
   });
 }
@@ -755,7 +755,6 @@ amountInput.addEventListener('input', () => {
   setAmountError(reading.error);
   if (!reading.error) {
     amount = reading.amount;
-    saveMonth();
   }
   render();
 });
@@ -775,7 +774,6 @@ undo.addEventListener('click', () => {
     if (!previous) return;
     selected = previous.person;
     absences[selected] = previous.before;
-    saveMonth();
   }
   render();
 });
@@ -790,21 +788,18 @@ byId('copy-link').addEventListener('click', () => {
   url.hash = encodeShared(year, month, amount, absences);
   copyText(url.href, 'Đã sao chép link hóa đơn.');
 });
-byId('save-shared').addEventListener('click', () => {
-  if (storageGet(periodKey()) && !window.confirm(`Ghi đè hóa đơn tháng ${month}/${year} đã lưu trên trình duyệt này?`)) return;
-  shared = false;
-  if (!saveMonth()) {
-    shared = true;
-    byId('shared-caption').textContent = 'Trình duyệt chưa lưu được bản này.';
-    return;
-  }
+byId('use-shared').addEventListener('click', () => {
   leaveSnapshot();
-  storageSet('period', periodKey());
   byId('shared-banner').hidden = true;
-  notify('Đã lưu hóa đơn vào trình duyệt.');
+  notify('Đã dùng bản này cho trang đang mở.');
 });
 document.querySelectorAll('[data-close]').forEach(button => button.addEventListener('click', () => button.closest('dialog').close()));
 window.addEventListener('hashchange', openFromLocation);
+window.addEventListener('focus', checkForNewMonth);
+document.addEventListener('visibilitychange', () => {
+  if (!document.hidden) checkForNewMonth();
+});
+window.setInterval(checkForNewMonth, 60_000);
 
 const motion = matchMedia('(prefers-reduced-motion: reduce)');
 let effectsOn = storageGet('effects') !== 'off';
